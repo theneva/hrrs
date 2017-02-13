@@ -14,27 +14,11 @@
 
     <artifactId>hrrs-api</artifactId>
 
-    <properties>
-
-        <!-- library versions -->
-        <protobuf.version>3.1.0</protobuf.version>
-
-        <!-- plugin versions -->
-        <protoc-jar-maven-plugin.version>${protobuf.version}.2</protoc-jar-maven-plugin.version>
-
-    </properties>
-
     <dependencies>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>${protobuf.version}</version>
         </dependency>
 
         <dependency>
@@ -62,23 +46,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>com.github.os72</groupId>
-                <artifactId>protoc-jar-maven-plugin</artifactId>
-                <version>${protoc-jar-maven-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <protocVersion>${protobuf.version}</protocVersion>
-                        </configuration>
-                    </execution>
-                </executions>
             </plugin>
 
         </plugins>
