@@ -4,7 +4,6 @@ import com.vlkan.hrrs.api.HttpRequestRecordWriter;
 import com.vlkan.hrrs.api.HttpRequestRecordWriterTarget;
 import com.vlkan.hrrs.serializer.base64.Base64HttpRequestRecord;
 import com.vlkan.hrrs.serializer.base64.Base64HttpRequestRecordWriter;
-import com.vlkan.hrrs.serializer.base64.guava.GuavaBase64Encoder;
 import com.vlkan.hrrs.serializer.file.HttpRequestRecordWriterFileTarget;
 import com.vlkan.hrrs.servlet.HrrsFilter;
 import org.slf4j.Logger;
@@ -12,8 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Objects;
 
 public class Base64HrrsFilter extends HrrsFilter {
 
@@ -26,9 +24,9 @@ public class Base64HrrsFilter extends HrrsFilter {
     private final HttpRequestRecordWriter<String> writer;
 
     public Base64HrrsFilter(File writerTargetFile) {
-        this.writerTargetFile = checkNotNull(writerTargetFile, "writerTargetFile");
+        this.writerTargetFile = Objects.requireNonNull(writerTargetFile, "writerTargetFile");
         this.writerTarget = new HttpRequestRecordWriterFileTarget(writerTargetFile, Base64HttpRequestRecord.CHARSET);
-        this.writer = new Base64HttpRequestRecordWriter(writerTarget, GuavaBase64Encoder.getInstance());
+        this.writer = new Base64HttpRequestRecordWriter(writerTarget);
     }
 
     public File getWriterTargetFile() {

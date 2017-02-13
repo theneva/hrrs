@@ -7,13 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 @Singleton
 public class RateLimitedExecutor implements CloseableExecutor {
@@ -26,9 +25,8 @@ public class RateLimitedExecutor implements CloseableExecutor {
 
     @Inject
     public RateLimitedExecutor(Config config) {
-
         // Check arguments.
-        checkNotNull(config, "config");
+        Objects.requireNonNull(config, "config");
 
         // Set class fields.
         this.executorService = createExecutorService(config.getThreadCount());
@@ -49,7 +47,7 @@ public class RateLimitedExecutor implements CloseableExecutor {
         return Executors.newFixedThreadPool(threadCount, new ThreadFactory() {
             @Override
             public Thread newThread(Runnable runnable) {
-                checkNotNull(runnable, "runnable");
+                Objects.requireNonNull(runnable, "runnable");
                 String threadName = String.format("%s-%s", name, threadCounter.getAndIncrement());
                 return new Thread(threadGroup, runnable, threadName);
             }
@@ -58,7 +56,7 @@ public class RateLimitedExecutor implements CloseableExecutor {
 
     @Override
     public void execute(Runnable runnable) {
-        checkNotNull(runnable, "runnable");
+        Objects.requireNonNull(runnable, "runnable");
         rateLimiter.acquire();
         executorService.execute(runnable);
     }

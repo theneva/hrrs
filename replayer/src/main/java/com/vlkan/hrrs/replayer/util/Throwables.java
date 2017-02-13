@@ -1,6 +1,6 @@
 package com.vlkan.hrrs.replayer.util;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Objects;
 
 public enum Throwables {;
 
@@ -17,7 +17,7 @@ public enum Throwables {;
      * undeclared checked exceptions</a> for details.
      */
     public static void throwCheckedException(final Throwable exception) {
-        checkNotNull(exception, "exception");
+        Objects.requireNonNull(exception, "exception");
         new EvilThrower<RuntimeException>().sneakyThrow(exception);
     }
 

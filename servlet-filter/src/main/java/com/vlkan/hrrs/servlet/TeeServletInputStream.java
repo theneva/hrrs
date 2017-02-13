@@ -4,9 +4,8 @@ import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class TeeServletInputStream extends ServletInputStream {
 
@@ -40,7 +39,7 @@ public class TeeServletInputStream extends ServletInputStream {
 
     @Override
     public void setReadListener(ReadListener readListener) {
-        checkNotNull(readListener, "readListener");
+        Objects.requireNonNull(readListener, "readListener");
         servletInputStream.setReadListener(readListener);
     }
 

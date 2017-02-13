@@ -7,8 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Objects;
 
 public class JtlFilePrinter implements JtlPrinter {
 
@@ -17,7 +16,7 @@ public class JtlFilePrinter implements JtlPrinter {
     private final PrintStream printStream;
 
     public JtlFilePrinter(Config config) throws FileNotFoundException {
-        checkNotNull(config, "config");
+        Objects.requireNonNull(config, "config");
         FileOutputStream outputStream = new FileOutputStream(config.getJtlOutputFile());
         this.printStream = new PrintStream(outputStream);
         printStream.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");

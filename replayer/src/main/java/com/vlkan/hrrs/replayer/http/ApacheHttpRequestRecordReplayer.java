@@ -20,9 +20,8 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 @Singleton
 public class ApacheHttpRequestRecordReplayer implements HttpRequestRecordReplayer {
@@ -45,10 +44,10 @@ public class ApacheHttpRequestRecordReplayer implements HttpRequestRecordReplaye
             JtlPrinter jtlPrinter) {
 
         // Check arguments.
-        checkNotNull(config, "config");
-        checkNotNull(httpClientFactory, "httpClientFactory");
-        checkNotNull(metricRegistry, "metricRegistry");
-        checkNotNull(jtlPrinter, "jtlPrinter");
+        Objects.requireNonNull(config, "config");
+        Objects.requireNonNull(httpClientFactory, "httpClientFactory");
+        Objects.requireNonNull(metricRegistry, "metricRegistry");
+        Objects.requireNonNull(jtlPrinter, "jtlPrinter");
 
         // Set class fields.
         this.metricRegistry = metricRegistry;

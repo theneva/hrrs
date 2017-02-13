@@ -8,9 +8,7 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Objects;
 
 public abstract class HrrsFilter implements Filter {
 
@@ -135,17 +133,24 @@ public abstract class HrrsFilter implements Filter {
 
     @Override
     public synchronized void init(FilterConfig filterConfig) throws ServletException {
-        checkArgument(servletContext == null, "servlet context is already initialized");
+        if (servletContext != null) {
+            throw new IllegalArgumentException("servlet context is already initialized");
+        }
+
         servletContext = filterConfig.getServletContext();
         Object prevAttribute = servletContext.getAttribute(SERVLET_CONTEXT_ATTRIBUTE_KEY);
-        checkArgument(prevAttribute == null, "servlet context attribute is already initialized");
+
+        if (prevAttribute != null) {
+            throw new IllegalArgumentException("servlet context attribute is already initialized");
+        }
+
         servletContext.setAttribute(SERVLET_CONTEXT_ATTRIBUTE_KEY, this);
         LOGGER.trace("initialized");
     }
 
     @Override
     public synchronized void destroy() {
-        checkNotNull(servletContext, "servlet context is not initialized");
+        Objects.requireNonNull(servletContext, "servlet context is not initialized");
         servletContext.removeAttribute(SERVLET_CONTEXT_ATTRIBUTE_KEY);
         LOGGER.trace("destroyed");
     }

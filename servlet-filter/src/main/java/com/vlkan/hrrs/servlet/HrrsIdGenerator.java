@@ -2,8 +2,6 @@ package com.vlkan.hrrs.servlet;
 
 import java.util.Random;
 
-import static com.google.common.base.Preconditions.checkArgument;
-
 class HrrsIdGenerator {
 
     private static final Random RANDOM = new Random(System.nanoTime());
@@ -11,7 +9,10 @@ class HrrsIdGenerator {
     private final int randomSuffixLength;
 
     HrrsIdGenerator(int randomSuffixLength) {
-        checkArgument(randomSuffixLength >= 0, "randomSuffixLength >= 0, found: %s", randomSuffixLength);
+        if (randomSuffixLength < 0) {
+            throw new IllegalArgumentException(String.format("randomSuffixLength < 0, found: %s", randomSuffixLength));
+        }
+
         this.randomSuffixLength = randomSuffixLength;
     }
 

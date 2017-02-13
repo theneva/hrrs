@@ -2,34 +2,26 @@ package com.vlkan.hrrs.serializer.base64;
 
 import com.vlkan.hrrs.api.*;
 
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.vlkan.hrrs.serializer.base64.Base64HttpRequestRecord.FIELD_SEPARATOR;
 import static com.vlkan.hrrs.serializer.base64.Base64HttpRequestRecord.RECORD_SEPARATOR;
 
-@NotThreadSafe
 public class Base64HttpRequestRecordReaderIterator implements Iterator<HttpRequestRecord> {
 
     private final HttpRequestRecordReaderSource<String> source;
 
-    private final Base64Decoder decoder;
+    private final Base64.Decoder decoder = Base64.getDecoder();
 
     private long lineIndex = -1;
 
     private String line;
 
-    Base64HttpRequestRecordReaderIterator(HttpRequestRecordReaderSource<String> source, Base64Decoder decoder) {
-        this.source = checkNotNull(source, "source");
-        this.decoder = checkNotNull(decoder, "decoder");
+    Base64HttpRequestRecordReaderIterator(HttpRequestRecordReaderSource<String> source) {
+        this.source = Objects.requireNonNull(source, "source");
     }
 
     @Override
@@ -56,6 +48,12 @@ public class Base64HttpRequestRecordReaderIterator implements Iterator<HttpReque
             return readRecord(recordBytes);
         } catch (IOException error) {
             throw new RuntimeException(error);
+        }
+    }
+
+    private static void checkArgument(boolean condition, String message, Object... arguments) {
+        if (!condition) {
+            throw new IllegalArgumentException(String.format(message, arguments));
         }
     }
 
@@ -118,7 +116,6 @@ public class Base64HttpRequestRecordReaderIterator implements Iterator<HttpReque
             headers.add(header);
         }
         return headers;
-
     }
 
     private static HttpRequestPayload readPayload(DataInputStream stream) throws IOException {

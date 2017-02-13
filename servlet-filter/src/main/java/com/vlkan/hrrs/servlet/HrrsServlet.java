@@ -6,8 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Objects;
 
 public class HrrsServlet extends HttpServlet {
 
@@ -17,7 +16,7 @@ public class HrrsServlet extends HttpServlet {
 
     private HrrsFilter getFilter() {
         HrrsFilter filter = (HrrsFilter) getServletContext().getAttribute(HrrsFilter.SERVLET_CONTEXT_ATTRIBUTE_KEY);
-        return checkNotNull(filter, "filter is not initialized");
+        return Objects.requireNonNull(filter, "filter is not initialized");
     }
 
     @Override

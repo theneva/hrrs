@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.vlkan.hrrs</groupId>
             <artifactId>hrrs-servlet-filter-base64</artifactId>
-            <version>${project.version}</version>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
