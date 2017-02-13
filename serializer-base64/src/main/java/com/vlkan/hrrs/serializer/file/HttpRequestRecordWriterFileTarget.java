@@ -1,17 +1,13 @@
 package com.vlkan.hrrs.serializer.file;
 
-import com.google.common.base.MoreObjects;
 import com.vlkan.hrrs.api.HttpRequestRecordWriterTarget;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-@NotThreadSafe
 public class HttpRequestRecordWriterFileTarget implements HttpRequestRecordWriterTarget<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequestRecordWriterFileTarget.class);
@@ -23,8 +19,8 @@ public class HttpRequestRecordWriterFileTarget implements HttpRequestRecordWrite
     private final BufferedWriter writer;
 
     public HttpRequestRecordWriterFileTarget(File file, Charset charset) {
-        this.file = checkNotNull(file, "file");
-        this.charset = checkNotNull(charset, "charset");
+        this.file = Objects.requireNonNull(file, "file");
+        this.charset = Objects.requireNonNull(charset, "charset");
         this.writer = createWriter(file, charset);
         LOGGER.trace("instantiated (file={}, charset={})", file, charset);
     }
@@ -66,10 +62,11 @@ public class HttpRequestRecordWriterFileTarget implements HttpRequestRecordWrite
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("file", file)
-                .add("charset", charset)
-                .toString();
+        return String.format(
+                "HttpRequestRecordWriterFileTarget{file=%s, charset=%s}",
+                file,
+                charset
+        );
     }
 
 }

@@ -1,19 +1,14 @@
 package com.vlkan.hrrs.serializer.file;
 
-import com.google.common.base.MoreObjects;
 import com.vlkan.hrrs.api.HttpRequestRecordReaderSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-@NotThreadSafe
 public class HttpRequestRecordReaderFileSource implements HttpRequestRecordReaderSource<String> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequestRecordReaderFileSource.class);
@@ -25,8 +20,8 @@ public class HttpRequestRecordReaderFileSource implements HttpRequestRecordReade
     private final BufferedReader reader;
 
     public HttpRequestRecordReaderFileSource(File file, Charset charset) {
-        this.file = checkNotNull(file, "file");
-        this.charset = checkNotNull(charset, "charset");
+        this.file = Objects.requireNonNull(file, "file");
+        this.charset = Objects.requireNonNull(charset, "charset");
         this.reader = createReader(file, charset);
         LOGGER.trace("instantiated (file={}, charset={})", file, charset);
     }
@@ -62,7 +57,6 @@ public class HttpRequestRecordReaderFileSource implements HttpRequestRecordReade
         return charset;
     }
 
-    @Nullable
     @Override
     public String read() {
         try {
@@ -81,10 +75,10 @@ public class HttpRequestRecordReaderFileSource implements HttpRequestRecordReade
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("file", file)
-                .add("charset", charset)
-                .toString();
+        return String.format(
+                "HttpRequestRecordReaderFileSource{file=%s, charset=%s}",
+                file,
+                charset
+        );
     }
-
 }

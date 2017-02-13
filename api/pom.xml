@@ -17,7 +17,6 @@
     <properties>
 
         <!-- library versions -->
-        <immutables.version>2.4.1</immutables.version>
         <protobuf.version>3.1.0</protobuf.version>
 
         <!-- plugin versions -->
@@ -33,25 +32,16 @@
         </dependency>
 
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.google.protobuf</groupId>
             <artifactId>protobuf-java</artifactId>
             <version>${protobuf.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.immutables</groupId>
             <artifactId>value</artifactId>
             <version>${immutables.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>

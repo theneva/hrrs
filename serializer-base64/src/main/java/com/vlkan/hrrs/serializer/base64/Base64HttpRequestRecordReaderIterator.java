@@ -2,31 +2,26 @@ package com.vlkan.hrrs.serializer.base64;
 
 import com.vlkan.hrrs.api.*;
 
-import javax.annotation.concurrent.NotThreadSafe;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.vlkan.hrrs.serializer.base64.Base64HttpRequestRecord.DATE_FORMAT;
 import static com.vlkan.hrrs.serializer.base64.Base64HttpRequestRecord.FIELD_SEPARATOR;
 
-@NotThreadSafe
 public class Base64HttpRequestRecordReaderIterator implements Iterator<HttpRequestRecord> {
 
     private final HttpRequestRecordReaderSource<String> source;
 
-    private final Base64Decoder decoder;
+    private final Base64.Decoder decoder = Base64.getDecoder();
 
     private long lineIndex = -1;
 
     private String line;
 
-    Base64HttpRequestRecordReaderIterator(HttpRequestRecordReaderSource<String> source, Base64Decoder decoder) {
-        this.source = checkNotNull(source, "source");
-        this.decoder = checkNotNull(decoder, "decoder");
+    Base64HttpRequestRecordReaderIterator(HttpRequestRecordReaderSource<String> source) {
+        this.source = Objects.requireNonNull(source, "source");
     }
 
     @Override
@@ -55,6 +50,12 @@ public class Base64HttpRequestRecordReaderIterator implements Iterator<HttpReque
         } catch (Throwable error) {
             String message = String.format("failed parsing record (lineIndex=%d)", lineIndex);
             throw new RuntimeException(message, error);
+        }
+    }
+
+    private static void checkArgument(boolean condition, String message, Object... arguments) {
+        if (!condition) {
+            throw new IllegalArgumentException(String.format(message, arguments));
         }
     }
 
@@ -95,7 +96,7 @@ public class Base64HttpRequestRecordReaderIterator implements Iterator<HttpReque
         }
 
         // Read headers.
-        List<HttpRequestHeader> headers = new ArrayList<HttpRequestHeader>(headerCount);
+        List<HttpRequestHeader> headers = new ArrayList<>(headerCount);
         for (int headerIndex = 0; headerIndex < headerCount; headerIndex++) {
             String name = stream.readUTF();
             String value = stream.readUTF();
@@ -107,7 +108,6 @@ public class Base64HttpRequestRecordReaderIterator implements Iterator<HttpReque
             headers.add(header);
         }
         return headers;
-
     }
 
     private static HttpRequestPayload readPayload(DataInputStream stream) throws IOException {

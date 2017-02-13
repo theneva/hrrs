@@ -10,10 +10,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MetricFileReporter extends Thread implements MetricReporter {
 
@@ -26,8 +25,8 @@ public class MetricFileReporter extends Thread implements MetricReporter {
     private final MetricRegistry metricRegistry;
 
     public MetricFileReporter(Config config, MetricRegistry metricRegistry) {
-        this.config = checkNotNull(config, "config");
-        this.metricRegistry = checkNotNull(metricRegistry, "metricRegistry");
+        this.config = Objects.requireNonNull(config, "config");
+        this.metricRegistry = Objects.requireNonNull(metricRegistry, "metricRegistry");
         setName(createName());
         LOGGER.debug(
                 "instantiated (file={}, periodSeconds={})",
@@ -51,11 +50,9 @@ public class MetricFileReporter extends Thread implements MetricReporter {
         File file = new File(config.getMetricsOutputFile());
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
-            PrintStream printStream = new PrintStream(fileOutputStream);
-            try {
+            try (PrintStream printStream = new PrintStream(fileOutputStream))
+            {
                 run(printStream);
-            } finally {
-                printStream.close();
             }
         } catch (IOException error) {
             String message = String.format("failed opening metric output file (file=%s)", file);

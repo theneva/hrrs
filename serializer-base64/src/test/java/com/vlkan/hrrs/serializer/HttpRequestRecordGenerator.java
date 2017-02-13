@@ -53,7 +53,7 @@ public class HttpRequestRecordGenerator extends Generator<HttpRequestRecord> {
             return Collections.emptyList();
         }
         HttpRequestHeaderGenerator headerGenerator = gen().make(HttpRequestHeaderGenerator.class);
-        List<HttpRequestHeader> headers = new ArrayList<HttpRequestHeader>(headerCount);
+        List<HttpRequestHeader> headers = new ArrayList<>(headerCount);
         for (int headerIndex = 0; headerIndex < headerCount; headerIndex++) {
             HttpRequestHeader header = headerGenerator.generate(sourceOfRandomness, generationStatus);
             headers.add(header);

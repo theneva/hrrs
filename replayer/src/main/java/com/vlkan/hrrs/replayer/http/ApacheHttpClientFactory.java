@@ -12,11 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Objects;
 
 @Singleton
 public class ApacheHttpClientFactory {
@@ -27,7 +25,7 @@ public class ApacheHttpClientFactory {
 
     @Inject
     public ApacheHttpClientFactory(Config config) {
-        this.config = checkNotNull(config, "config");
+        this.config = Objects.requireNonNull(config, "config");
         LOGGER.debug(
                 "instantiated (threadCount={}, timeoutSeconds={}, localAddress={})",
                 config.getThreadCount(), config.getRequestTimeoutSeconds(), config.getLocalAddress());

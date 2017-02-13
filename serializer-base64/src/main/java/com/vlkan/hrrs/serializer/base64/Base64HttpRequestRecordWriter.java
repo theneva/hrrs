@@ -5,20 +5,20 @@ import com.vlkan.hrrs.api.*;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static com.vlkan.hrrs.serializer.base64.Base64HttpRequestRecord.*;
 
 public class Base64HttpRequestRecordWriter implements HttpRequestRecordWriter<String> {
 
-    private final Base64Encoder encoder;
+    private final Base64.Encoder encoder = Base64.getEncoder();
 
     private final HttpRequestRecordWriterTarget<String> target;
 
-    public Base64HttpRequestRecordWriter(HttpRequestRecordWriterTarget<String> target, Base64Encoder encoder) {
-        this.target = checkNotNull(target, "target");
-        this.encoder = checkNotNull(encoder, "encoder");
+    public Base64HttpRequestRecordWriter(HttpRequestRecordWriterTarget<String> target) {
+        this.target = Objects.requireNonNull(target, "target");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Base64HttpRequestRecordWriter implements HttpRequestRecordWriter<St
                 target.write(record.getMethod().toString());
                 target.write(FIELD_SEPARATOR);
                 byte[] recordBytes = writeRecord(record);
-                String encodedRecordBytes = encoder.encode(recordBytes);
+                String encodedRecordBytes = new String(encoder.encode(recordBytes));
                 target.write(encodedRecordBytes);
                 target.write(RECORD_SEPARATOR);
             }

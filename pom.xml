@@ -25,14 +25,13 @@
 
         <!-- common properties -->
         <java.major.version>1</java.major.version>
-        <java.minor.version>6</java.minor.version>
+        <java.minor.version>8</java.minor.version>
         <java.version>${java.major.version}.${java.minor.version}</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- library versions -->
+        <immutables.version>2.4.1</immutables.version>
         <assertj.version>3.6.1</assertj.version>
-        <guava.version>20.0</guava.version>
-        <jsr305.version>3.0.1</jsr305.version>
         <junit.version>4.12</junit.version>
         <junit-quickcheck.version>0.7</junit-quickcheck.version>
         <servlet-api.version>3.1.0</servlet-api.version>
@@ -61,18 +60,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.google.code.findbugs</groupId>
-                <artifactId>jsr305</artifactId>
-                <version>${jsr305.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${servlet-api.version}</version>
@@ -82,18 +69,21 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>com.pholser</groupId>
                 <artifactId>junit-quickcheck-core</artifactId>
                 <version>${junit-quickcheck.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
                 <version>${assertj.version}</version>
+                <scope>test</scope>
             </dependency>
 
         </dependencies>
